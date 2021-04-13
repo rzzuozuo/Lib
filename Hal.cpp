@@ -9,7 +9,7 @@
 #include "main.h"
 
 Hal::Hal() {
-	HAL_Init();
+
 }
 
 Hal::~Hal() {
