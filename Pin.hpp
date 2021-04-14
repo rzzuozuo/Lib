@@ -65,23 +65,23 @@ public:
 		this->GPIO_Init.Mode = isPushPull?GPIO_MODE_OUTPUT_PP:GPIO_MODE_OUTPUT_OD;
 		this->GPIO_Init.Pull = pull;
 		this->GPIO_Init.Speed = speed;
-		SetMode(this->GPIO_Init);
+		setMode(this->GPIO_Init);
 	}
 
 	void setModeOutputPP(Pull pull = NO_PULL, Speed_t speed = LOW){
-		SetModeOutput(true, pull, speed);
+		setModeOutput(true, pull, speed);
 	}
 
 
 	void setModeOutputOD(bool isPullUp = false, Speed_t speed = LOW){
 		Pull pull = isPullUp?PULL_UP:NO_PULL;
-		SetModeOutput(true, pull, speed);
+		setModeOutput(true, pull, speed);
 	}
 
 	void setModeInput(Pull pull = NO_PULL){
 		this->GPIO_Init.Mode = GPIO_MODE_INPUT;
 		this->GPIO_Init.Pull = pull;
-		SetMode(this->GPIO_Init);
+		setMode(this->GPIO_Init);
 	}
 
 
