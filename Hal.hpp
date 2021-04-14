@@ -38,6 +38,10 @@ public:
 	static void error_callBack(){
 		Error_Handler();
 	}
+
+	static void delay(uint32_t ms){
+		HAL_Delay(ms);
+	}
 };
 
 #endif /* APPLICATION_LIB_HAL_H_ */
