@@ -22,7 +22,7 @@ Gpio::Gpio(GPIO_TypeDef  *GPIOx):GPIOx(GPIOx) {
 }
 
 Gpio::~Gpio() {
-	// TODO Auto-generated destructor stub
+
 
 }
 

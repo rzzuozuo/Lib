@@ -13,6 +13,6 @@ Hal::Hal() {
 }
 
 Hal::~Hal() {
-	// TODO Auto-generated destructor stub
+
 }
 
