@@ -9,7 +9,7 @@
 #define APPLICATION_HAL_CPP_CAN_H_
 
 #include <Hal.hpp>
-
+#include <functional>
 extern "C"{
 void MX_CAN_Init(void);
 }
@@ -37,8 +37,14 @@ public:
 	virtual StatusTypeDef filter();
 	StatusTypeDef start();
 	StatusTypeDef startReceive();
+	void Fifo0MsgPendingCallback(CAN_HandleTypeDef *_hcan);
+	void setRegisterRxCallback(void (* pFifo0MsgPendingCallback)(CAN_HandleTypeDef *_hcan)){
+		this->pFifo0MsgPendingCallback = pFifo0MsgPendingCallback;
+	}
 protected:
 	CAN_HandleTypeDef &hcan;
-};
+	void (* pFifo0MsgPendingCallback)(CAN_HandleTypeDef *_hcan) = nullptr;
 
+};
+typedef void (* Fifo0MsgPendingCallback_t)(CAN_HandleTypeDef*);
 #endif /* APPLICATION_HAL_CPP_CAN_H_ */
