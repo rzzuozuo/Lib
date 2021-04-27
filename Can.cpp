@@ -65,6 +65,7 @@ Can::StatusTypeDef Can::filter(){
 Can::StatusTypeDef Can::start(){
 	StatusTypeDef state;
 
+#if USE_HAL_CAN_REGISTER_CALLBACKS == 1
 	std::function<void(CAN_HandleTypeDef *)> callabck = std::bind(&Can::Fifo0MsgPendingCallback,this,std::placeholders::_1);
 
 	callabck(&this->hcan);
@@ -76,6 +77,7 @@ Can::StatusTypeDef Can::start(){
 		error();
 		return state;
 	}
+#endif
 
 	state = (StatusTypeDef)HAL_CAN_Start(&hcan);
 	if (state != OK)
