@@ -18,7 +18,7 @@ public:
 	Thread();
 	virtual ~Thread();
 
-	void setName(char* name){
+	void setName(const char* name){
 		attributes.name = name;
 	}
 

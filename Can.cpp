@@ -106,19 +106,6 @@ Can::StatusTypeDef Can::startReceive(){
 	return state;
 }
 
-void Can::Fifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
-{
-	if(hcan->Instance == this->hcan.Instance){
-		StatusTypeDef state;
-		CAN_RxHeaderTypeDef pHeader;
-		uint8_t aData[8];
-		state = (StatusTypeDef) HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &pHeader, aData);
-		if (state != OK)
-		{
-			error();
-		}
-	}
-}
 void Can::error(){
 
 }

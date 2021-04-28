@@ -15,13 +15,14 @@ void MX_CAN_Init(void);
 }
 
 class Can: public Hal {
+public:
 	struct Baudrate_t{
 		uint32_t Prescale;
 		uint32_t TimeSeg1;
 		uint32_t TimeSeg2;
 		uint32_t SyncJumpWidth;
 	};
-public:
+
 	Can(CAN_HandleTypeDef &hcan);
 	virtual ~Can();
 
@@ -37,7 +38,7 @@ public:
 	virtual StatusTypeDef filter();
 	StatusTypeDef start();
 	StatusTypeDef startReceive();
-	void Fifo0MsgPendingCallback(CAN_HandleTypeDef *_hcan);
+
 	void setRegisterRxCallback(void (* pFifo0MsgPendingCallback)(CAN_HandleTypeDef *_hcan)){
 		this->pFifo0MsgPendingCallback = pFifo0MsgPendingCallback;
 	}
