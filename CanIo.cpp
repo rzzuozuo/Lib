@@ -10,7 +10,7 @@
 CanIo::CanIo(CAN_HandleTypeDef &hcan,int txSize,int rxSize):Can(hcan){
 	this->txSize = txSize;
 	this->rxSize = rxSize;
-	setThreada();
+	setThread();
 }
 
 CanIo::~CanIo() {
@@ -70,7 +70,7 @@ void CanIo::setCanDevice(){
 }
 
 static const char threadName[] = "CanIo";
-void CanIo::setThreada(){
+void CanIo::setThread(){
 	setName(threadName);
 	setStaticSize(512);
 }

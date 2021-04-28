@@ -35,7 +35,7 @@ private:
 	Can::StatusTypeDef setFilter(uint16_t* id,int size);
 	void run() override;
 	virtual void setCanDevice();
-	virtual void setThreada();
+	virtual void setThread();
 	virtual void msgDecode(CanMsg_t &msg){
 
 	}
