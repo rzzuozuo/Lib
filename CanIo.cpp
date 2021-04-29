@@ -6,14 +6,29 @@
  */
 
 #include <CanIo.hpp>
+#define MAX_CAN_NUM	2
+static CanIo* handles[MAX_CAN_NUM] = {0};
 
 CanIo::CanIo(CAN_HandleTypeDef &hcan,int txSize,int rxSize):Can(hcan){
+
+	for(int i = 0; i < MAX_CAN_NUM ;i++){
+		if(handles[i] == NULL){
+			handles[i] = this;
+			break;
+		}
+	}
+
 	this->txSize = txSize;
 	this->rxSize = rxSize;
 	setThread();
 }
 
 CanIo::~CanIo() {
+}
+
+void CanIo::init(){
+	setCanDevice();
+	Can::init(baudrate);
 }
 
 void CanIo::run(){
@@ -23,11 +38,7 @@ void CanIo::run(){
 	if(rxMsgQueue == NULL)
 		rxMsgQueue= osMessageQueueNew(rxSize, sizeof(CanMsg_t), NULL);
 
-
-
-	setCanDevice();
-	init(baudrate);
-
+	init();
 
 	filter();
 	Can::start();
@@ -151,15 +162,31 @@ void CanIo::sendMsg(CanMsg_t msg){
 	osMessageQueuePut(txMsgQueue, &msg, 0U, 0U);
 }
 
-void CanIo::fifo0callBack(CanIo &canIo){
+void CanIo::fifo0callBack(CanMsg_t &msg){
+	if(rxMsgQueue!= NULL)
+		osMessageQueuePut(rxMsgQueue, &msg, 0U, 0U);
+}
 
+/**
+  * @brief  Rx FIFO 0 message pending callback.
+  * @param  hcan pointer to a CAN_HandleTypeDef structure that contains
+  *         the configuration information for the specified CAN.
+  * @retval None
+  */
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
 	CAN_RxHeaderTypeDef Header;
 	CanIo::CanMsg_t msg;
-	HAL_CAN_GetRxMessage(&canIo.hcan, CAN_RX_FIFO0, &Header, msg.data);
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &Header, msg.data);
+
 	if((Header.IDE == CAN_ID_STD)&&(Header.RTR == CAN_RTR_DATA)){
 		msg.id = Header.StdId;
 		msg.length = Header.DLC;
-		if(canIo.rxMsgQueue!= NULL)
-			osMessageQueuePut(canIo.rxMsgQueue, &msg, 0U, 0U);
+	}
+
+	for(int i = 0; (handles[i] != NULL)&& (i < MAX_CAN_NUM); ++i){
+		if(handles[i]->hcan.Instance == hcan->Instance){
+			handles[i]->fifo0callBack(msg);
+		}
 	}
 }

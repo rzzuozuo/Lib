@@ -31,9 +31,12 @@ public:
 	}
 
 	virtual void error() ;
-	StatusTypeDef init(uint32_t Prescaler,uint32_t TimeSeg1, uint32_t TimeSeg2, uint32_t SyncJumpWidth);
+	StatusTypeDef init(uint32_t Prescaler,uint32_t TimeSeg1, uint32_t TimeSeg2, uint32_t SyncJumpWidth,CAN_TypeDef *Instance = CAN1);
 	StatusTypeDef init(Baudrate_t baudrate){
 		return init(baudrate.Prescale, baudrate.TimeSeg1, baudrate.TimeSeg2, baudrate.SyncJumpWidth);
+	}
+	virtual void init(){
+
 	}
 	virtual StatusTypeDef filter();
 	StatusTypeDef start();

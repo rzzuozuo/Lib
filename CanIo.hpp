@@ -26,6 +26,8 @@ public:
 		baudrate = {9,2,1,1};
 	}
 
+	virtual void init() override;
+
 	void sendMsg(CanMsg_t msg);
 private:
 	Baudrate_t baudrate = {1,1,1,1};
@@ -41,7 +43,7 @@ private:
 	}
 	osMessageQueueId_t txMsgQueue = NULL;
 	osMessageQueueId_t rxMsgQueue = NULL;
-	static void fifo0callBack(CanIo &canIo);
+	virtual void fifo0callBack(CanMsg_t &msg);
 };
 
 #endif /* CANIO_H_ */

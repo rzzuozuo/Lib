@@ -15,7 +15,7 @@ Can::~Can() {
 	HAL_CAN_DeInit(&hcan);
 }
 
-Can::StatusTypeDef Can::init(uint32_t Prescaler,uint32_t TimeSeg1, uint32_t TimeSeg2, uint32_t SyncJumpWidth){
+Can::StatusTypeDef Can::init(uint32_t Prescaler,uint32_t TimeSeg1, uint32_t TimeSeg2, uint32_t SyncJumpWidth,CAN_TypeDef *Instance){
 	StatusTypeDef state;
 
 	assert_param(Prescaler > 0);
@@ -23,7 +23,7 @@ Can::StatusTypeDef Can::init(uint32_t Prescaler,uint32_t TimeSeg1, uint32_t Time
 	assert_param(TimeSeg2 > 0);
 	assert_param(SyncJumpWidth > 0);
 
-	hcan.Instance = CAN1;
+	hcan.Instance = Instance;
 	hcan.Init.Prescaler = Prescaler;
 	hcan.Init.Mode = CAN_MODE_NORMAL;
 	hcan.Init.SyncJumpWidth = ((SyncJumpWidth-1) << CAN_BTR_SJW_Pos) & CAN_BTR_SJW_Msk;
