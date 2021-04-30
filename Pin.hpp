@@ -33,7 +33,13 @@ public:
 	} Pull;
 
 	Pin(GPIO_TypeDef  *GPIOx, uint16_t GPIO_Pin);
-	Pin(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init);
+
+	void init(GPIO_InitTypeDef *GPIO_Init);
+
+	virtual void init(){
+
+	}
+
 	virtual ~Pin();
 
 	PinState_t readPin() const{
@@ -58,7 +64,6 @@ public:
 
 	void setMode(const GPIO_InitTypeDef &GPIO_Init){
 		this->GPIO_Init = GPIO_Init;
-		HAL_GPIO_Init(GPIOx, &this->GPIO_Init);
 	}
 
 	void setModeOutput(bool isPushPull, Pull pull = NO_PULL, Speed_t speed = LOW){
