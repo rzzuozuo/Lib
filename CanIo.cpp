@@ -44,7 +44,7 @@ void CanIo::run(){
 	Can::start();
 	startReceive();
 
-	osStatus_t status;
+	osStatus_t txStatus,rxStatus;
 	CAN_TxHeaderTypeDef   TxHeader = {0};
 	uint32_t TxMailbox;
 	CanMsg_t txMsg;
@@ -56,8 +56,8 @@ void CanIo::run(){
 			osDelay(1);
 		}
 
-		status = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 0);   // wait for message
-	    if (status == osOK) {
+		txStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 0);   // wait for message
+	    if (txStatus == osOK) {
 	    	TxHeader.StdId = txMsg.id;
 	    	TxHeader.DLC = txMsg.length;
 
@@ -69,8 +69,8 @@ void CanIo::run(){
 	        }
 	    }
 
-		status = osMessageQueueGet(rxMsgQueue, &rxMsg, NULL, 1);   // wait for message
-	    if (status == osOK) {
+	    rxStatus = osMessageQueueGet(rxMsgQueue, &rxMsg, NULL, 1);   // wait for message
+	    if (rxStatus == osOK) {
 	    	msgDecode(rxMsg);
 	    }
 	}
