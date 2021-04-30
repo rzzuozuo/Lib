@@ -12,6 +12,7 @@
 
 class Uart: public Hal {
 	friend void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+	friend void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 public:
 	enum WordLength:unsigned int{
 		BYTES_8 = UART_WORDLENGTH_8B,
@@ -32,16 +33,19 @@ public:
 	Uart(UART_HandleTypeDef &huart);
 	virtual ~Uart();
 
-	StatusTypeDef init(USART_TypeDef * uart = USART1, uint32_t baudrate = 115200, WordLength wordLength = BYTES_8, StopBits stopBits = STOP_1, Parity parity = NONE);
+	StatusTypeDef init(USART_TypeDef * uart, uint32_t baudrate = 115200, WordLength wordLength = BYTES_8, StopBits stopBits = STOP_1, Parity parity = NONE);
 	virtual void init(){
 
 	}
-	StatusTypeDef receive(uint8_t* data,int size);
 	StatusTypeDef transmit(uint8_t* data, int size);
+	StatusTypeDef receive(uint8_t* data,int size);
+private:
+	virtual void txCpltCallback(){
+
+	}
 	virtual void rxCpltCallback(){
 
 	}
-private:
 	UART_HandleTypeDef &huart;
 	virtual void error(){
 

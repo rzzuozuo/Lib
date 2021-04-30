@@ -57,6 +57,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	for(int i = 0; (handles[i] != NULL)&& (i < MAX_UART_NUM); ++i){
 		if(handles[i]->huart.Instance == huart->Instance){
 			handles[i]->rxCpltCallback();
+			break;
+		}
+	}
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+	for(int i = 0; (handles[i] != NULL)&& (i < MAX_UART_NUM); ++i){
+		if(handles[i]->huart.Instance == huart->Instance){
+			handles[i]->txCpltCallback();
+			break;
 		}
 	}
 }
