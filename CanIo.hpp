@@ -29,12 +29,13 @@ public:
 	virtual void init() override;
 
 	void sendMsg(CanMsg_t msg);
+protected:
+	Can::StatusTypeDef setFilter(uint16_t* id,int size);
 private:
 	Baudrate_t baudrate = {1,1,1,1};
 	int txSize;
 	int rxSize;
 	virtual StatusTypeDef filter() override;
-	Can::StatusTypeDef setFilter(uint16_t* id,int size);
 	void run() override;
 	virtual void setCanDevice();
 	virtual void setThread();
