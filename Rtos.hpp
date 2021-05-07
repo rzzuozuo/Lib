@@ -24,6 +24,10 @@ public:
 	static osStatus_t delayMs (uint32_t ticks){
 		return osDelay (ticks);
 	}
+
+	static uint32_t getTick(){
+		return osKernelGetTickCount();
+	}
 };
 
 #endif /* APPLICATION_RTOS_HPP_ */
