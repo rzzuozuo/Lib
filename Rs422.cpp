@@ -8,13 +8,11 @@
 #include <Rs422.hpp>
 
 Rs422::Rs422(UART_HandleTypeDef &huart):Uart(huart) {
-	// TODO Auto-generated constructor stub
 	de = new Pin(DE_GPIO_Port,DE_Pin);
 	re = new Pin(RE_GPIO_Port,RE_Pin);
 }
 
 Rs422::~Rs422() {
-	// TODO Auto-generated destructor stub
 }
 
 void Rs422::enableTransmit() {
