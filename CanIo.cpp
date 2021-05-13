@@ -117,7 +117,7 @@ Can::StatusTypeDef CanIo::setFilter(uint16_t* id,int size){
 		return state;
 	}else{
 		for(int i = 0; i < size; ++i){
-			if(size != 0 && (size % 4) == 0){
+			if((i != 0) && ((i % 4) == 0)){
 				state = (StatusTypeDef)HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
 				if (state != OK)
 				{
