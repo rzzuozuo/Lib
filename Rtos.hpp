@@ -28,6 +28,10 @@ public:
 	static uint32_t getTick(){
 		return osKernelGetTickCount();
 	}
+
+	virtual void error(){
+
+	}
 };
 
 #endif /* APPLICATION_RTOS_HPP_ */
