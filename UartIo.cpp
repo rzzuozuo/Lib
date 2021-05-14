@@ -46,15 +46,15 @@ void UartIo::run() {
 	assert_param(rxMsgQueue != NULL);
 	assert_param(txSemaphore != NULL);
 
-	uart->init();
-	uart->receive(&rxbuff, 1);
+	init();
+	receive(&rxbuff, 1);
 	for(;;){
 
 		txStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 1);   // wait for message
 	    if (txStatus == osOK) {
 	    	txMutexStatus = osSemaphoreAcquire(txSemaphore, osWaitForever);
 	    	if(txMutexStatus == osOK)
-	    		uart->transmit(txMsg.data,txMsg.size);
+	    		Uart::transmit(txMsg.data,txMsg.size);
 	    }
 
 	    rxStatus = osMessageQueueGet(rxMsgQueue, &readyBuff, NULL, 1);   // wait for message
@@ -65,18 +65,18 @@ void UartIo::run() {
 }
 
 void UartIo::txCpltCallback() {
-	if(rxMsgQueue!= NULL)
-		if(osMessageQueuePut(rxMsgQueue, &rxbuff, 0U, 0U)!= osOK){
-			Thread::error();
-		}
-	receive(&rxbuff, 1);
-}
-
-void UartIo::rxCpltCallback() {
 	if(txMsg.data != nullptr){
 		delete [] txMsg.data;
 		if(osSemaphoreRelease(txSemaphore) !=  osOK){
 			Thread::error();
 		}
 	}
+}
+
+void UartIo::rxCpltCallback() {
+	if(rxMsgQueue!= NULL)
+		if(osMessageQueuePut(rxMsgQueue, &rxbuff, 0U, 0U)!= osOK){
+			Thread::error();
+		}
+	receive(&rxbuff, 1);
 }
