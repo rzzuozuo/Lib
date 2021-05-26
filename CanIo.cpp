@@ -116,42 +116,37 @@ Can::StatusTypeDef CanIo::setFilter(uint16_t* id,int size){
 		}
 		return state;
 	}else{
-		for(int i = 0; i < size; ++i){
-			if((i != 0) && ((i % 4) == 0)){
-				state = (StatusTypeDef)HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
-				if (state != OK)
-				{
-					Can::error();
-					return state;
-				}
-			}
-			if(i % 4 == 0){
-				sFilterConfig.FilterIdHigh =		id[i] << 5;
-				sFilterConfig.FilterIdLow = 		id[i] << 5;
-				sFilterConfig.FilterMaskIdHigh =	id[i] << 5;
-				sFilterConfig.FilterMaskIdLow = 	id[i] << 5;
-			}
-			if(i % 4 == 1){
-				sFilterConfig.FilterIdLow = 		id[i] << 5;
-				sFilterConfig.FilterMaskIdHigh = 	id[i] << 5;
-				sFilterConfig.FilterMaskIdLow = 	id[i] << 5;
-			}
-			if(i % 4 == 2){
-				sFilterConfig.FilterMaskIdHigh = 	id[i] << 5;
-				sFilterConfig.FilterMaskIdLow = 	id[i] << 5;
-			}
-			if(i % 4 == 3){
-				sFilterConfig.FilterMaskIdLow = 	id[i] << 5;
-			}
+		//size : ID列表大小
+		//configSize : 需要配置的大小，4的倍数
+		int filterBank = 0;
+		int configSize = 0;
 
-			sFilterConfig.FilterBank = size / 4;
+		if((size % 4) != 0)
+			configSize = (size / 4 +1)*4;// 对齐 宽度为4
+		else
+			configSize = size;
 
-		}
-		state = (StatusTypeDef)HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
-		if (state != OK)
-		{
-			Can::error();
-			return state;
+
+		for(int i = 0; i < configSize; ++i){
+
+			 if((i%4) == 0)
+				 sFilterConfig.FilterIdHigh = i < size ? id[i] << 5 : id[size - 1] << 5;
+			 else if((i%4) == 1)
+				 sFilterConfig.FilterIdLow = i < size ? id[i] << 5 : id[size - 1] << 5;
+			 else if((i%4) == 2)
+				 sFilterConfig.FilterMaskIdHigh = i < size ? id[i] << 5 : id[size - 1] << 5;
+			 else if((i%4) == 3)
+			 {
+				 sFilterConfig.FilterMaskIdLow = i < size ? id[i] << 5 : id[size - 1] << 5;
+				 sFilterConfig.FilterBank = filterBank;
+				 state = (StatusTypeDef)HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
+				 if (state != OK)
+				 {
+					 Can::error();
+					 return state;
+				 }
+				 filterBank ++;
+			 }
 		}
 		return state;
 	}
