@@ -7,7 +7,8 @@
 
 #ifndef APPLICATION_RTOS_HPP_
 #define APPLICATION_RTOS_HPP_
-#include "cmsis_os.h"
+#include <assert.h>
+#include "cmsis_os2.h"
 class Rtos {
 public:
 	Rtos();

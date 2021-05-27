@@ -37,7 +37,7 @@ public:
 	}
 
 protected:
-	osThreadId id = nullptr;
+	osThreadId_t id = NULL;
 	virtual void error(){
 
 	}
