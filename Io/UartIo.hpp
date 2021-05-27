@@ -8,8 +8,8 @@
 #ifndef UARTIO_HPP_
 #define UARTIO_HPP_
 
-#include <Uart.hpp>
-#include <Thread.hpp>
+#include <Drivers/Uart.hpp>
+#include <Rtos/Thread.hpp>
 
 
 

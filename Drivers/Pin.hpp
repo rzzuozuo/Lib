@@ -8,7 +8,7 @@
 #ifndef PIN_HPP_
 #define PIN_HPP_
 
-#include <Gpio.hpp>
+#include "Gpio.hpp"
 
 class Pin: public Gpio {
 public:

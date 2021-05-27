@@ -8,8 +8,7 @@
 #ifndef APPLICATION_HAL_CPP_CAN_H_
 #define APPLICATION_HAL_CPP_CAN_H_
 
-#include <Hal.hpp>
-#include <functional>
+#include "Hal.hpp"
 extern "C"{
 void MX_CAN_Init(void);
 }

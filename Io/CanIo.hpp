@@ -8,8 +8,8 @@
 #ifndef CANIO_H_
 #define CANIO_H_
 
-#include <Can.hpp>
-#include <Thread.hpp>
+#include <Drivers/Can.hpp>
+#include <Rtos/Thread.hpp>
 
 class CanIo: public Can, public Thread {
 	friend void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);

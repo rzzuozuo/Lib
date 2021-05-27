@@ -8,8 +8,8 @@
 #ifndef RS422_HPP_
 #define RS422_HPP_
 
-#include <Pin.hpp>
-#include <Uart.hpp>
+#include "Pin.hpp"
+#include "Uart.hpp"
 
 class Rs422: public Uart {
 public:

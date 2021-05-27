@@ -5,7 +5,7 @@
  *      Author: Administrator
  */
 
-#include <Rs422.hpp>
+#include "Rs422.hpp"
 
 Rs422::Rs422(UART_HandleTypeDef &huart):Uart(huart) {
 	de = new Pin(DE_GPIO_Port,DE_Pin);

@@ -8,8 +8,8 @@
 #ifndef RS422IO_HPP_
 #define RS422IO_HPP_
 
-#include <Rs422.hpp>
-#include <Thread.hpp>
+#include <Drivers/Rs422.hpp>
+#include <Rtos/Thread.hpp>
 
 class Rs422Io: public Rs422, public Thread {
 public:

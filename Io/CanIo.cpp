@@ -5,7 +5,7 @@
  *      Author: Administrator
  */
 
-#include <CanIo.hpp>
+#include "CanIo.hpp"
 #define MAX_CAN_NUM	2
 static CanIo* handles[MAX_CAN_NUM] = {0};
 

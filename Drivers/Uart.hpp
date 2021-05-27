@@ -8,7 +8,7 @@
 #ifndef UART_HPP_
 #define UART_HPP_
 
-#include <Hal.hpp>
+#include "Hal.hpp"
 
 class Uart: public Hal {
 	friend void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);

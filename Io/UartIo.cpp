@@ -1,21 +1,21 @@
 /*
- * Rs422Io.cpp
+ * UartIo.cpp
  *
- *  Created on: Apr 30, 2021
+ *  Created on: May 13, 2021
  *      Author: Administrator
  */
 
-#include <Rs422Io.hpp>
+#include "UartIo.hpp"
 
-Rs422Io::Rs422Io(UART_HandleTypeDef &huart,int txSize,int rxSize):Rs422(huart),txSize(txSize),rxSize(rxSize){
+UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSize(txSize),rxSize(rxSize){
 
 }
 
-Rs422Io::~Rs422Io() {
-	txMsg.data = nullptr;
+UartIo::~UartIo() {
+	// TODO Auto-generated destructor stub
 }
 
-void Rs422Io::transmit(uint8_t *data, int size) {
+void UartIo::transmit(uint8_t *data, int size) {
 	if(txMsgQueue!= NULL){
 		TxMsg txMsg = {NULL,0};
 		txMsg.data = new uint8_t[size];
@@ -28,13 +28,13 @@ void Rs422Io::transmit(uint8_t *data, int size) {
 			osStatus_t status;
 			status = osMessageQueuePut(txMsgQueue, &txMsg, 0U, 0U);
 			if(status != osOK){
-				error();
+				Rtos::error();
 			}
 		}
 	}
 }
 
-void Rs422Io::run() {
+void UartIo::run() {
 	osStatus_t txStatus,txMutexStatus,rxStatus;
 	uint8_t readyBuff;
 	txMsgQueue= osMessageQueueNew(txSize, sizeof(TxMsg), NULL);
@@ -54,7 +54,7 @@ void Rs422Io::run() {
 	    if (txStatus == osOK) {
 	    	txMutexStatus = osSemaphoreAcquire(txSemaphore, osWaitForever);
 	    	if(txMutexStatus == osOK)
-	    		Rs422::transmit(txMsg.data,txMsg.size);
+	    		Uart::transmit(txMsg.data,txMsg.size);
 	    }
 
 	    rxStatus = osMessageQueueGet(rxMsgQueue, &readyBuff, NULL, 1);   // wait for message
@@ -64,23 +64,19 @@ void Rs422Io::run() {
 	}
 }
 
-void Rs422Io::rs422RxCpltCallback() {
-	if(rxMsgQueue!= NULL)
-		if(osMessageQueuePut(rxMsgQueue, &rxbuff, 0U, 0U)!= osOK){
-			error();
-		}
-	receive(&rxbuff, 1);
-}
-
-void Rs422Io::rs422TxCpltCallback() {
+void UartIo::txCpltCallback() {
 	if(txMsg.data != nullptr){
 		delete [] txMsg.data;
 		if(osSemaphoreRelease(txSemaphore) !=  osOK){
-			error();
+			Thread::error();
 		}
 	}
 }
 
-void Rs422Io::error() {
-
+void UartIo::rxCpltCallback() {
+	if(rxMsgQueue!= NULL)
+		if(osMessageQueuePut(rxMsgQueue, &rxbuff, 0U, 0U)!= osOK){
+			Thread::error();
+		}
+	receive(&rxbuff, 1);
 }

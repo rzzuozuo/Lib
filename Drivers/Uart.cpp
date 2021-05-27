@@ -5,7 +5,7 @@
  *      Author: Administrator
  */
 
-#include <Uart.hpp>
+#include "Uart.hpp"
 
 #define MAX_UART_NUM 	8
 static Uart* handles[MAX_UART_NUM] = {0};

@@ -8,7 +8,7 @@
 #ifndef APPLICATION_USER_APP_THREAD_HPP_
 #define APPLICATION_USER_APP_THREAD_HPP_
 
-#include <Rtos.hpp>
+#include "Rtos.hpp"
 
 void taskFunction(void* argument);
 
