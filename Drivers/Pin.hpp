@@ -64,9 +64,11 @@ public:
 
 	void setMode(const GPIO_InitTypeDef &GPIO_Init){
 		this->GPIO_Init = GPIO_Init;
+		HAL_GPIO_Init(GPIOx, &this->GPIO_Init);
 	}
 
 	void setModeOutput(bool isPushPull, Pull pull = NO_PULL, Speed_t speed = LOW){
+		this->GPIO_Init.Pin = GPIO_Pin;
 		this->GPIO_Init.Mode = isPushPull?GPIO_MODE_OUTPUT_PP:GPIO_MODE_OUTPUT_OD;
 		this->GPIO_Init.Pull = pull;
 		this->GPIO_Init.Speed = speed;
@@ -80,7 +82,7 @@ public:
 
 	void setModeOutputOD(bool isPullUp = false, Speed_t speed = LOW){
 		Pull pull = isPullUp?PULL_UP:NO_PULL;
-		setModeOutput(true, pull, speed);
+		setModeOutput(false, pull, speed);
 	}
 
 	void setModeInput(Pull pull = NO_PULL){
