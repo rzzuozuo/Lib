@@ -15,18 +15,11 @@ I2cPin::I2cPin(GPIO_TypeDef  *scl_gpiox, uint16_t scl_pin, GPIO_TypeDef  *sda_gp
 void I2cPin::init() {
 	scl->setPin();
 	scl->setModeOutputOD();
+	scl->setPin();
 
 	sda->setPin();
 	sda->setModeOutputOD();
-}
-
-uint8_t I2cPin::sendBit(uint8_t bit) {
-	bit == 1 ? scl->setPin():scl->resetPin();
-	return sda->readPin() == Pin::SET ? 0x01:0x00;
-}
-
-uint8_t I2cPin::readBit() {
-	return sda->readPin() == Pin::SET ? 0x01:0x00;
+	sda->setPin();
 }
 
 I2cPin::~I2cPin() {
