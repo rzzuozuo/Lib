@@ -86,7 +86,7 @@ public:
 		uint8_t temp = 0,bit;
 		for(int i = 0; i < 8; ++i){
 			scl_down();
-			state = Ok;
+			sda_raise(); //release bus
 			scl_raise();
 			bit = sda->readPin() == Pin::SET ? 0x01:0x00;
 			temp <<= 1;
@@ -98,7 +98,7 @@ public:
 
 	State waitAck(){
 		scl_down();
-		sda_raise();
+		sda_raise(); //release bus
 		scl_raise();
 		if(sda->readPin() == Pin::RESET)
 			return Ok;
@@ -115,7 +115,7 @@ public:
 
 	State sendNack(){
 		scl_down();
-		sda_raise();
+		sda_raise(); //release bus
 		scl_raise();
 		return Ok;
 	}
