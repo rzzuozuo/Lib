@@ -15,8 +15,8 @@ public:
 
 	enum State{
 		Ok,
-		SCL_Stretch,
-		SDA_Stretch,
+		TimeOut,
+		StretchError,
 		LogicError,
 		AckError,
 	};
@@ -25,100 +25,7 @@ public:
 
 	void init();
 
-	uint8_t sendBit(uint8_t bit);
-	uint8_t readBit();
 
-	State scl_raise(){
-		State state = Ok;
-		scl->setPin();
-		while(scl->readPin() != Pin::SET)
-		{
-			state = SCL_Stretch;
-		}//stretch
-		return state;
-	}
-
-	State scl_down(){
-		scl->resetPin();
-		return Ok;
-	}
-
-	State sda_raise(){
-		State state = Ok;
-		sda->setPin();
-		return state;
-	}
-
-	State sda_down(){
-		sda->resetPin();
-		return Ok;
-	}
-
-	State start(){
-		sda_raise();
-		scl_raise();
-		if((scl->readPin() != Pin::SET) || (sda->readPin() != Pin::SET)){
-			return LogicError;
-		}
-		sda_down();
-		return Ok;
-	}
-
-	State stop(){
-		scl_down();
-		sda->resetPin();
-		scl_raise();
-		sda->setPin();
-		return Ok;
-	}
-	State writeByte(uint8_t data){
-		for(int i = 0; i < 8; ++i){
-			scl_down();
-			(data&0x80) == 0x80 ? sda_raise():sda_down();
-			data <<= 1;
-			scl_raise();
-		}
-		return Ok;
-	}
-
-	State readByte(uint8_t* data){
-		State state = Ok;
-		uint8_t temp = 0,bit;
-		for(int i = 0; i < 8; ++i){
-			scl_down();
-			sda_raise(); //release bus
-			scl_raise();
-			bit = sda->readPin() == Pin::SET ? 0x01:0x00;
-			temp <<= 1;
-			temp |= bit;
-		}
-		*data = temp;
-		return state;
-	}
-
-	State waitAck(){
-		scl_down();
-		sda_raise(); //release bus
-		scl_raise();
-		if(sda->readPin() == Pin::RESET)
-			return Ok;
-		else
-			return AckError;
-	}
-
-	State sendAck(){
-		scl_down();
-		sda_down();
-		scl_raise();
-		return Ok;
-	}
-
-	State sendNack(){
-		scl_down();
-		sda_raise(); //release bus
-		scl_raise();
-		return Ok;
-	}
 
 	State write(uint8_t addr, uint8_t* data, int size){
 		State state = Ok;
@@ -178,14 +85,105 @@ public:
 		return stop();
 	}
 
-
-
-
 	virtual ~I2cPin();
 
 protected:
 	Pin* scl;
 	Pin* sda;
+
+	virtual State waitStretchRelease(){
+			while(scl->readPin() != Pin::SET){}
+			return Ok;
+		}
+
+		State scl_raise(){
+			State state = Ok;
+			scl->setPin();
+			waitStretchRelease();
+			return state;
+		}
+
+		State scl_down(){
+			scl->resetPin();
+			return Ok;
+		}
+
+		State sda_raise(){
+			State state = Ok;
+			sda->setPin();
+			return state;
+		}
+
+		State sda_down(){
+			sda->resetPin();
+			return Ok;
+		}
+
+		State start(){
+			sda_raise();
+			scl_raise();
+			if((scl->readPin() != Pin::SET) || (sda->readPin() != Pin::SET)){
+				return LogicError;
+			}
+			sda_down();
+			return Ok;
+		}
+
+		State stop(){
+			scl_down();
+			sda->resetPin();
+			scl_raise();
+			sda->setPin();
+			return Ok;
+		}
+		State writeByte(uint8_t data){
+			for(int i = 0; i < 8; ++i){
+				scl_down();
+				(data&0x80) == 0x80 ? sda_raise():sda_down();
+				data <<= 1;
+				scl_raise();
+			}
+			return Ok;
+		}
+
+		State readByte(uint8_t* data){
+			State state = Ok;
+			uint8_t temp = 0,bit;
+			for(int i = 0; i < 8; ++i){
+				scl_down();
+				sda_raise(); //release bus
+				scl_raise();
+				bit = sda->readPin() == Pin::SET ? 0x01:0x00;
+				temp <<= 1;
+				temp |= bit;
+			}
+			*data = temp;
+			return state;
+		}
+
+		State waitAck(){
+			scl_down();
+			sda_raise(); //release bus
+			scl_raise();
+			if(sda->readPin() == Pin::RESET)
+				return Ok;
+			else
+				return AckError;
+		}
+
+		State sendAck(){
+			scl_down();
+			sda_down();
+			scl_raise();
+			return Ok;
+		}
+
+		State sendNack(){
+			scl_down();
+			sda_raise(); //release bus
+			scl_raise();
+			return Ok;
+		}
 };
 
 #endif /* DRIVERS_I2C_PIN_HPP_ */
