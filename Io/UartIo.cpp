@@ -12,7 +12,7 @@ UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSi
 }
 
 UartIo::~UartIo() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void UartIo::transmit(uint8_t *data, int size) {
