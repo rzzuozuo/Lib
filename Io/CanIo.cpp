@@ -6,6 +6,9 @@
  */
 
 #include "CanIo.hpp"
+
+#ifdef LIB_DRIVER_CAN_ENABLED
+
 #define MAX_CAN_NUM	2
 static CanIo* handles[MAX_CAN_NUM] = {0};
 
@@ -185,3 +188,5 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		}
 	}
 }
+
+#endif //LIB_DRIVER_CAN_ENABLED

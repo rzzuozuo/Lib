@@ -6,6 +6,9 @@
  */
 
 #include "I2cHw.h"
+
+#ifdef LIB_DRIVER_I2C_ENABLED
+
 #define MAX_I2C_NUM		4
 static I2cHw* handles[MAX_I2C_NUM] = {0};
 
@@ -80,3 +83,5 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *handle){
 		}
 	}
 }
+
+#endif /* LIB_DRIVER_I2C_ENABLED */

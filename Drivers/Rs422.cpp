@@ -7,6 +7,8 @@
 
 #include "Rs422.hpp"
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 Rs422::Rs422(UART_HandleTypeDef &huart):Uart(huart) {
 
 }
@@ -49,3 +51,5 @@ void Rs422::rxCpltCallback() {
 	disableReceive();
 	rs422RxCpltCallback();
 }
+
+#endif // LIB_DRIVER_UART_ENABLED

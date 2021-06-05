@@ -11,6 +11,8 @@
 #include <Drivers/Can.hpp>
 #include <Rtos/Thread.hpp>
 
+#ifdef LIB_DRIVER_CAN_ENABLED
+
 class CanIo: public Can, public Thread {
 	friend void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 public:
@@ -47,4 +49,5 @@ private:
 	virtual void fifo0callBack(CanMsg_t &msg);
 };
 
+#endif // LIB_DRIVER_CAN_ENABLED
 #endif /* CANIO_H_ */

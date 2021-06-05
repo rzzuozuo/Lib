@@ -10,6 +10,9 @@
 
 #include "Hal.hpp"
 
+#ifdef HAL_I2C_MODULE_ENABLED
+#define LIB_DRIVER_I2C_ENABLED
+
 class I2cHw: public Hal {
 	friend void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c);
 	friend void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c);
@@ -34,4 +37,5 @@ private:
 	I2C_HandleTypeDef& handle;
 };
 
+#endif /* HAL_I2C_MODULE_ENABLED */
 #endif /* I2CHW_H_ */

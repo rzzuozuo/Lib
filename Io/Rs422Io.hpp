@@ -11,6 +11,8 @@
 #include <Drivers/Rs422.hpp>
 #include <Rtos/Thread.hpp>
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 class Rs422Io: public Rs422, public Thread {
 public:
 	struct TxMsg{
@@ -42,5 +44,7 @@ private:
 
 	}
 };
+
+#endif //LIB_DRIVER_UART_ENABLED
 
 #endif /* RS422IO_HPP_ */

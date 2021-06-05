@@ -11,7 +11,7 @@
 #include <Drivers/Uart.hpp>
 #include <Rtos/Thread.hpp>
 
-
+#ifdef LIB_DRIVER_UART_ENABLED
 
 class UartIo:public Thread,public  Uart {
 public:
@@ -46,6 +46,6 @@ private:
 	virtual void rxCpltCallback();
 };
 
-
+#endif // LIB_DRIVER_UART_ENABLED
 
 #endif /* UARTIO_HPP_ */

@@ -7,6 +7,8 @@
 
 #include "UartIo.hpp"
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSize(txSize),rxSize(rxSize){
 
 }
@@ -80,3 +82,5 @@ void UartIo::rxCpltCallback() {
 		}
 	receive(&rxbuff, 1);
 }
+
+#endif // LIB_DRIVER_UART_ENABLED

@@ -7,6 +7,8 @@
 
 #include "Uart.hpp"
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 #define MAX_UART_NUM 	8
 static Uart* handles[MAX_UART_NUM] = {0};
 
@@ -71,3 +73,4 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	}
 }
 
+#endif //LIB_DRIVER_UART_ENABLED

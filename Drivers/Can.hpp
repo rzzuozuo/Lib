@@ -9,6 +9,11 @@
 #define APPLICATION_HAL_CPP_CAN_H_
 
 #include "Hal.hpp"
+
+#ifdef HAL_CAN_MODULE_ENABLED
+
+#define LIB_DRIVER_CAN_ENABLED
+
 extern "C"{
 void MX_CAN_Init(void);
 }
@@ -50,4 +55,6 @@ protected:
 
 };
 typedef void (* Fifo0MsgPendingCallback_t)(CAN_HandleTypeDef*);
+
+#endif // HAL_CAN_MODULE_ENABLED
 #endif /* APPLICATION_HAL_CPP_CAN_H_ */

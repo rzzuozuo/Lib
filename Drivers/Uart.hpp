@@ -10,6 +10,10 @@
 
 #include "Hal.hpp"
 
+#ifdef HAL_UART_MODULE_ENABLED
+
+#define LIB_DRIVER_UART_ENABLED
+
 class Uart: public Hal {
 	friend void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 	friend void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
@@ -51,5 +55,7 @@ private:
 
 	}
 };
+
+#endif // HAL_UART_MODULE_ENABLED
 
 #endif /* UART_HPP_ */

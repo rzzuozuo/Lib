@@ -7,6 +7,8 @@
 
 #include "Rs422Io.hpp"
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 Rs422Io::Rs422Io(UART_HandleTypeDef &huart,int txSize,int rxSize):Rs422(huart),txSize(txSize),rxSize(rxSize){
 
 }
@@ -84,3 +86,5 @@ void Rs422Io::rs422TxCpltCallback() {
 void Rs422Io::error() {
 
 }
+
+#endif //LIB_DRIVER_UART_ENABLED

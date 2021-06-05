@@ -11,6 +11,8 @@
 #include "Pin.hpp"
 #include "Uart.hpp"
 
+#ifdef LIB_DRIVER_UART_ENABLED
+
 class Rs422: public Uart {
 public:
 	Rs422(UART_HandleTypeDef &huart);
@@ -38,5 +40,7 @@ private:
 
 	}
 };
+
+#endif //LIB_DRIVER_UART_ENABLED
 
 #endif /* RS422_HPP_ */

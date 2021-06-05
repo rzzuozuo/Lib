@@ -7,6 +7,8 @@
 
 #include "Can.hpp"
 
+#ifdef HAL_CAN_MODULE_ENABLED
+
 Can::Can(CAN_HandleTypeDef &hcan):hcan(hcan){
 
 }
@@ -110,5 +112,5 @@ void Can::error(){
 
 }
 
-
+#endif // HAL_CAN_MODULE_ENABLED
 
