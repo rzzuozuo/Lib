@@ -86,7 +86,7 @@ void CanIo::setCanDevice(){
 static const char threadName[] = "CanIo";
 void CanIo::setThread(){
 	setName(threadName);
-	setStaticSize(512);
+	setStackSize(512);
 }
 
 Can::StatusTypeDef CanIo::filter(){

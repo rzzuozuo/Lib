@@ -26,7 +26,7 @@ public:
 		attributes.priority = priority;
 	}
 
-	void setStaticSize(uint32_t size){
+	void setStackSize(uint32_t size){
 		attributes.stack_size = size;
 	}
 
