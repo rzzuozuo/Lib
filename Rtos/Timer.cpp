@@ -18,5 +18,5 @@ Timer::~Timer() {
 void timer_callback(void* argument){
 	assert(argument != NULL);
 
-	((Timer*)argument)->callback();
+	((Timer*)argument)->timeoutCallback();
 }

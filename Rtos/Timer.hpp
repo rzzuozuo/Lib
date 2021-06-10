@@ -27,7 +27,7 @@ public:
 
 	osStatus_t start(uint32_t tick){
 		assert(id != NULL);
-
+		startCallBack();
 		return osTimerStart(id, tick);
 	}
 
@@ -47,8 +47,8 @@ public:
 		return id;
 	}
 
-	virtual void callback(){}
-
+	virtual void timeoutCallback(){}
+	virtual void startCallBack(){}
 	virtual void error(){}
 protected:
 	osTimerId_t id = NULL;
