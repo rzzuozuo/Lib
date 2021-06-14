@@ -41,13 +41,13 @@ protected:
 	virtual void error(){
 
 	}
-private:
-	osThreadAttr_t attributes = {nullptr, osThreadDetached, nullptr, 0, nullptr, 0, osPriorityNormal, 0, 0};
 	virtual void run(){
 		for(;;){
 			delayMs(1);
 		}
 	}
+private:
+	osThreadAttr_t attributes = {nullptr, osThreadDetached, nullptr, 0, nullptr, 0, osPriorityNormal, 0, 0};
 };
 
 
