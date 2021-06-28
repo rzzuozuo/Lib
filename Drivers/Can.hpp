@@ -57,8 +57,9 @@ public:
 	struct Header{
 		uint32_t id:32;
 		uint8_t dlc:4;
-		bool rtr:1;
-		bool ide:1;
+		bool rtr:1;//is remote fram
+		bool ide:1;//is ext fram
+		Header():rtr(false),ide(false){}
 	};
 
 	struct Msg:Header{
