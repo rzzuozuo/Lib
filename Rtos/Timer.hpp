@@ -19,9 +19,19 @@ public:
 	virtual ~Timer();
 
 
-	void _new()
+	void _newOnce()
 	{
+		if(id != NULL)
+			osTimerDelete(id);
 		id = osTimerNew(timer_callback, osTimerOnce, this, NULL);
+		assert(id != NULL);
+	}
+
+	void _newPeriodic()
+	{
+		if(id != NULL)
+			osTimerDelete(id);
+		id = osTimerNew(timer_callback, osTimerPeriodic, this, NULL);
 		assert(id != NULL);
 	}
 
