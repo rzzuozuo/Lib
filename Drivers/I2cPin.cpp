@@ -23,6 +23,6 @@ void I2cPin::init() {
 }
 
 I2cPin::~I2cPin() {
-	// TODO Auto-generated destructor stub
+
 }
 
