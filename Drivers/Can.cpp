@@ -170,6 +170,10 @@ uint32_t Can::getTxMailboxesFreeLevel() {
 Can::StatusTypeDef Can::addTxMessage(uint16_t id, uint8_t* data, int size){
 	txHeader.StdId = id;
 	txHeader.DLC = size < 9 ? size : 8;
+	txHeader.ExtId = 0;
+	txHeader.IDE = CAN_ID_STD;
+	txHeader.RTR = CAN_RTR_DATA;
+	txHeader.TransmitGlobalTime = DISABLE;
 		return (StatusTypeDef)HAL_CAN_AddTxMessage(&handle, &txHeader, data,&txMailbox);
 }
 
