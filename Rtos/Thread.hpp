@@ -32,6 +32,7 @@ public:
 
 	void start(){
 		id = osThreadNew(taskFunction, this, &attributes);
+		assert(id != NULL);
 		if(id == nullptr)
 			error();
 	}
