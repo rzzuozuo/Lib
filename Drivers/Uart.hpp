@@ -11,7 +11,6 @@
 #include "Hal.hpp"
 
 #ifdef HAL_UART_MODULE_ENABLED
-
 #define LIB_DRIVER_UART_ENABLED
 
 class Uart: public Hal {

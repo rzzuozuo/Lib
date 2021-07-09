@@ -9,7 +9,7 @@
 
 #ifdef LIB_DRIVER_UART_ENABLED
 
-Rs422Io::Rs422Io(UART_HandleTypeDef &huart,int txSize,int rxSize):Rs422(huart),txSize(txSize),rxSize(rxSize){
+Rs422Io::Rs422Io(UART_HandleTypeDef &huart, Pin* re, Pin* de,int txSize, int rxSize):Rs422(huart, re, de),txSize(txSize),rxSize(rxSize){
 
 }
 
@@ -17,15 +17,16 @@ Rs422Io::~Rs422Io() {
 	txMsg.data = nullptr;
 }
 
-void Rs422Io::transmit(uint8_t *data, int size) {
+void Rs422Io::transmit(void *data, int size) {
 	if(txMsgQueue!= NULL){
+		uint8_t* pdata = (uint8_t*)data;
 		TxMsg txMsg = {NULL,0};
 		txMsg.data = new uint8_t[size];
 		assert_param(txMsg.data != NULL);
 		if(txMsg.data != NULL){
 			txMsg.size = size;
 			for(int i = 0; i < size; ++i){
-				txMsg.data[i] = data[i];
+				txMsg.data[i] = pdata[i];
 			}
 			osStatus_t status;
 			status = osMessageQueuePut(txMsgQueue, &txMsg, 0U, 0U);

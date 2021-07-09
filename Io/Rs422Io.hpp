@@ -19,10 +19,10 @@ public:
 		uint8_t* data;
 		int size;
 	};
-	Rs422Io(UART_HandleTypeDef &huart,int txSize, int rxSize);
+	Rs422Io(UART_HandleTypeDef &huart, Pin* re, Pin* de,int txSize = 256,int rxSize = 256);
 	virtual ~Rs422Io();
 
-	void transmit(uint8_t* data,int size);
+	void transmit(void* data,int size);
 
 private:
 	int txSize;

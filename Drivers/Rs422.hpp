@@ -15,7 +15,7 @@
 
 class Rs422: public Uart {
 public:
-	Rs422(UART_HandleTypeDef &huart);
+	Rs422(UART_HandleTypeDef &huart, Pin* re, Pin* de);
 	virtual ~Rs422();
 
 	StatusTypeDef transmit(uint8_t* data, int size);
@@ -26,8 +26,8 @@ private:
 	void disableTransmit();
 	void disableReceive();
 
-	Pin* re;
-	Pin* de;
+	Pin& re;
+	Pin& de;
 
 	void rxCpltCallback() override;
 	void txCpltCallback() override;

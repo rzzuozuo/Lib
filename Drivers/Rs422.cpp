@@ -9,7 +9,7 @@
 
 #ifdef LIB_DRIVER_UART_ENABLED
 
-Rs422::Rs422(UART_HandleTypeDef &huart):Uart(huart) {
+Rs422::Rs422(UART_HandleTypeDef &huart, Pin* re, Pin* de):Uart(huart),re(*re), de(*de) {
 
 }
 
@@ -17,19 +17,19 @@ Rs422::~Rs422() {
 }
 
 void Rs422::enableTransmit() {
-	de->setPin();
+	de.setPin();
 }
 
 void Rs422::enableReceive() {
-	re->resetPin();
+	re.resetPin();
 }
 
 void Rs422::disableTransmit() {
-	de->resetPin();
+	de.resetPin();
 }
 
 void Rs422::disableReceive() {
-	re->setPin();
+	//re.setPin();
 }
 
 Rs422::StatusTypeDef Rs422::transmit(uint8_t* data, int size){
