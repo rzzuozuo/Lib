@@ -7,7 +7,11 @@
 
 #include "Timer.hpp"
 
-Timer::Timer() {
+Timer::Timer(bool isPeriod) {
+	if(isPeriod)
+		_newPeriodic();
+	else
+		_newOnce();
 }
 
 Timer::~Timer() {

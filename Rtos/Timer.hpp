@@ -15,7 +15,7 @@ void timer_callback(void* argument);
 class Timer: public Rtos {
 public:
 	friend void timer_callback(void* argument);
-	Timer();
+	Timer(bool isPeriod = true);
 	virtual ~Timer();
 
 
