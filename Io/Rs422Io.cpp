@@ -38,7 +38,7 @@ void Rs422Io::transmit(void *data, int size) {
 }
 
 void Rs422Io::run() {
-	osStatus_t txStatus,txMutexStatus,rxStatus;
+	osStatus_t txMqStatus,txSemaphoreStatus,rxStatus;
 	uint8_t readyBuff;
 	txMsgQueue= osMessageQueueNew(txSize, sizeof(TxMsg), NULL);
 	rxMsgQueue= osMessageQueueNew(rxSize, 1, NULL);
@@ -53,10 +53,10 @@ void Rs422Io::run() {
 	receive(&rxbuff, 1);
 	for(;;){
 
-		txStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 1);   // wait for message
-	    if (txStatus == osOK) {
-	    	txMutexStatus = osSemaphoreAcquire(txSemaphore, osWaitForever);
-	    	if(txMutexStatus == osOK)
+		txSemaphoreStatus = osSemaphoreAcquire(txSemaphore, 1);
+	    if (txSemaphoreStatus == osOK) {
+	    	txMqStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 1);
+	    	if(txMqStatus == osOK)
 	    		Rs422::transmit(txMsg.data,txMsg.size);
 	    }
 

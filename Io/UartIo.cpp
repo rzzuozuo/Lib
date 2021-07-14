@@ -16,19 +16,22 @@ UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSi
 UartIo::~UartIo() {
 
 }
-
-void UartIo::transmit(uint8_t *data, int size) {
+UartIo::TxMsg txMsgdd;
+uint32_t newNum,pushNum,popNum,deletNum;
+void UartIo::transmit(void *data, int size) {
 	if(txMsgQueue!= NULL){
-		TxMsg txMsg = {NULL,0};
-		txMsg.data = new uint8_t[size];
+		txMsgdd = {NULL,0};
+		txMsgdd.data = new uint8_t[size];
+		newNum++;
 		assert_param(txMsg.data != NULL);
-		if(txMsg.data != NULL){
-			txMsg.size = size;
+		if(txMsgdd.data != NULL){
+			txMsgdd.size = size;
 			for(int i = 0; i < size; ++i){
-				txMsg.data[i] = data[i];
+				txMsgdd.data[i] = ((uint8_t*)data)[i];
 			}
 			osStatus_t status;
-			status = osMessageQueuePut(txMsgQueue, &txMsg, 0U, 0U);
+			pushNum++;
+			status = osMessageQueuePut(txMsgQueue, &txMsgdd, 0U, 0U);
 			if(status != osOK){
 				Rtos::error();
 			}
@@ -36,30 +39,45 @@ void UartIo::transmit(uint8_t *data, int size) {
 	}
 }
 
-void UartIo::run() {
-	osStatus_t txStatus,txMutexStatus,rxStatus;
-	uint8_t readyBuff;
+void UartIo::run1() {
+	osStatus_t txStatus,txSemaphoreStatus;
+
 	txMsgQueue= osMessageQueueNew(txSize, sizeof(TxMsg), NULL);
-	rxMsgQueue= osMessageQueueNew(rxSize, 1, NULL);
 	txSemaphore = osSemaphoreNew(1U, 1U, NULL);
 
 	/* Check the parameters */
 	assert_param(txMsgQueue != NULL);
-	assert_param(rxMsgQueue != NULL);
+
 	assert_param(txSemaphore != NULL);
 
-	init();
-	receive(&rxbuff, 1);
 	for(;;){
+		txSemaphoreStatus = osSemaphoreAcquire(txSemaphore, osWaitForever);
+		   // wait for message
+	    if (txSemaphoreStatus == osOK) {
 
-		txStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, 1);   // wait for message
-	    if (txStatus == osOK) {
-	    	txMutexStatus = osSemaphoreAcquire(txSemaphore, osWaitForever);
-	    	if(txMutexStatus == osOK)
+	    	txStatus = osMessageQueueGet(txMsgQueue, &txMsg, NULL, osWaitForever);
+	    	if(txStatus == osOK)
 	    		Uart::transmit(txMsg.data,txMsg.size);
 	    }
+	}
+}
 
-	    rxStatus = osMessageQueueGet(rxMsgQueue, &readyBuff, NULL, 1);   // wait for message
+void UartIo::run2() {
+	osStatus_t rxStatus;
+	uint8_t readyBuff;
+
+	rxMsgQueue= osMessageQueueNew(rxSize, 1, NULL);
+
+
+	/* Check the parameters */
+
+	assert_param(rxMsgQueue != NULL);
+
+
+
+	receive(&rxbuff, 1);
+	for(;;){
+	    rxStatus = osMessageQueueGet(rxMsgQueue, &readyBuff, NULL, osWaitForever);   // wait for message
 	    if (rxStatus == osOK) {
 	    	decodeMsg(readyBuff);
 	    }
@@ -70,7 +88,6 @@ void UartIo::txCpltCallback() {
 	if(txMsg.data != nullptr){
 		delete [] txMsg.data;
 		if(osSemaphoreRelease(txSemaphore) !=  osOK){
-			Thread::error();
 		}
 	}
 }
@@ -78,7 +95,6 @@ void UartIo::txCpltCallback() {
 void UartIo::rxCpltCallback() {
 	if(rxMsgQueue!= NULL)
 		if(osMessageQueuePut(rxMsgQueue, &rxbuff, 0U, 0U)!= osOK){
-			Thread::error();
 		}
 	receive(&rxbuff, 1);
 }

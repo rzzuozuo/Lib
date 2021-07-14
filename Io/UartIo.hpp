@@ -9,23 +9,21 @@
 #define UARTIO_HPP_
 
 #include <Drivers/Uart.hpp>
-#include <Rtos/Thread.hpp>
+#include <Rtos/ThreadDual.hpp>
 
 #ifdef LIB_DRIVER_UART_ENABLED
 
-class UartIo:public Thread,public  Uart {
+class UartIo:public Uart, public ThreadDual{
 public:
 	UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize);
 	virtual ~UartIo();
-
-	Uart* uart;
 
 	struct TxMsg{
 		uint8_t* data;
 		int size;
 	};
 
-	void transmit(uint8_t* data,int size);
+	void transmit(void* data,int size);
 
 private:
 	int txSize;
@@ -38,7 +36,8 @@ private:
 	osMessageQueueId_t rxMsgQueue = NULL;
 	osSemaphoreId_t txSemaphore = NULL;
 
-	virtual void run() override;
+	virtual void run1() override;
+	virtual void run2() override;
 
 	virtual void decodeMsg(uint8_t data) = 0;
 
