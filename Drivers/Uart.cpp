@@ -73,4 +73,14 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 	}
 }
 
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+	for(int i = 0; (handles[i] != NULL)&& (i < MAX_UART_NUM); ++i){
+		if(handles[i]->huart.Instance == huart->Instance){
+			handles[i]->errorCallback();
+			break;
+		}
+	}
+}
+
 #endif //LIB_DRIVER_UART_ENABLED

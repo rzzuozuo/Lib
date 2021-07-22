@@ -16,6 +16,8 @@
 class Uart: public Hal {
 	friend void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 	friend void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
+	friend void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
+
 public:
 	enum WordLength:unsigned int{
 		BYTES_8 = UART_WORDLENGTH_8B,
@@ -49,6 +51,11 @@ private:
 	virtual void rxCpltCallback(){
 
 	}
+
+	virtual void errorCallback(){
+
+	}
+
 	UART_HandleTypeDef &huart;
 	virtual void error(){
 

@@ -99,4 +99,8 @@ void UartIo::rxCpltCallback() {
 	receive(&rxbuff, 1);
 }
 
+void UartIo::errorCallback() {
+	receive(&rxbuff, 1);
+}
+
 #endif // LIB_DRIVER_UART_ENABLED

@@ -43,6 +43,7 @@ private:
 
 	virtual void txCpltCallback();
 	virtual void rxCpltCallback();
+	virtual void errorCallback();
 };
 
 #endif // LIB_DRIVER_UART_ENABLED
