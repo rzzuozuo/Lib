@@ -9,7 +9,7 @@
 
 #ifdef LIB_DRIVER_UART_ENABLED
 
-UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSize(txSize),rxSize(rxSize){
+UartIo::UartIo(UART_HandleTypeDef &huart,int txSize,int rxSize):Uart(huart),txSize(txSize),rxSize(rxSize),rxNb(0){
 
 }
 
@@ -79,6 +79,7 @@ void UartIo::run2() {
 	for(;;){
 	    rxStatus = osMessageQueueGet(rxMsgQueue, &readyBuff, NULL, osWaitForever);   // wait for message
 	    if (rxStatus == osOK) {
+	    	rxNb++;
 	    	decodeMsg(readyBuff);
 	    }
 	}

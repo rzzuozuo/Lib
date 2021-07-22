@@ -28,7 +28,7 @@ public:
 private:
 	int txSize;
 	int rxSize;
-
+	uint32_t rxNb;
 	//buffer
 	uint8_t rxbuff;
 	TxMsg txMsg;
