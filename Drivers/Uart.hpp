@@ -60,6 +60,7 @@ private:
 	virtual void error(){
 
 	}
+	uint32_t rxRequestNb;
 };
 
 #endif // HAL_UART_MODULE_ENABLED
