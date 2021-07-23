@@ -49,6 +49,8 @@ Uart::StatusTypeDef Uart::init(USART_TypeDef * uart,uint32_t baudrate, WordLengt
 Uart::StatusTypeDef Uart::receive(uint8_t* data,int size){
 	__HAL_UART_CLEAR_OREFLAG(&huart);
 	rxRequestNb++;
+	  /* Process Unlocked */
+    __HAL_UNLOCK(&huart);
 	return (StatusTypeDef)HAL_UART_Receive_IT(&huart, data , size);
 }
 
