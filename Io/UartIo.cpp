@@ -19,6 +19,7 @@ UartIo::~UartIo() {
 UartIo::TxMsg txMsgdd;
 uint32_t newNum,pushNum,popNum,deletNum;
 void UartIo::transmit(void *data, int size) {
+	assert_param(txMsgQueue != NULL);
 	if(txMsgQueue!= NULL){
 		txMsgdd = {NULL,0};
 		txMsgdd.data = new uint8_t[size];
