@@ -24,3 +24,8 @@ void taskFunction2(void* argument){
 	ThreadDual* thread =(ThreadDual*)argument;
 	thread->run2();
 }
+
+void ThreadDual::start() {
+	start(0);
+	start(1);
+}

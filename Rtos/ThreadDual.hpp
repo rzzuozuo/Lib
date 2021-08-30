@@ -42,6 +42,8 @@ public:
 			error();
 	}
 
+	void start();
+
 protected:
 	osThreadId_t id[2] = {0};
 
